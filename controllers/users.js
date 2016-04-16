@@ -50,7 +50,7 @@ export function postUsers (req, res, next) {
 
 export function getUserById (req, res, next) {
 
-  next(service.getUserById(req.params.id));
+  next(service.getUserById(req.params.id) || boom.notFound('user not found'));
 }
 
 export function updateUserById (req, res, next) {
