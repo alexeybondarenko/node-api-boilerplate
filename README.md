@@ -1,4 +1,4 @@
-# node-api-example
+# Node JS API boilerplate
 
 Simple boilerplate for Node JS API projects.
 
@@ -6,6 +6,7 @@ Simple boilerplate for Node JS API projects.
 - Middlewares style
 - Express validator
 - ES6 (Babel + Nodemon)
+- Boom JS
 
 ## TD;LR
 
