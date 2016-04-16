@@ -28,7 +28,7 @@ app.use((val, req, res, next) => {
     // error response
 
     let statusCode = (val.output || {}).statusCode || 500;
-    res.json({
+    res.status(statusCode).json({
       error: {
         // output is `boom js` error object property
         code: statusCode,
