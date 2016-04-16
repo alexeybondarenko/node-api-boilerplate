@@ -15,8 +15,8 @@ router.get('/users/:id', controllers.users.getUserById);
 router.put('/users/:id', controllers.users.updateUserById);
 router.delete('/users/:id', controllers.users.deleteUserById);
 
-router.use(function (err) {
-  throw boom.notFound('route not found');
+router.use(function (req, res, next) {
+  next(boom.notFound('route not found'));
 });
 
 export default router;
