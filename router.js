@@ -1,16 +1,22 @@
 
 import {Router} from 'express'
+import requireDir from 'require-dir'
+
+import boom from 'boom';
 
 let router = new Router();
+let controllers = requireDir('./controllers');
+let middlewares = requireDir('./middlewares');
 
-router.get('/', function (req, res, next) {
-  next({
-    message: "hello world!"
-  });
-});
+router.get('/users', middlewares.pagination(2), controllers.users.getUsers);
+router.post('/users', controllers.users.postUsers);
 
-router.get('/error', function (req, res, next) {
-  next(new Error("some error message"));
+router.get('/users/:id', controllers.users.getUserById);
+router.put('/users/:id', controllers.users.updateUserById);
+router.delete('/users/:id', controllers.users.deleteUserById);
+
+router.use(function (err) {
+  throw boom.notFound('route not found');
 });
 
 export default router;

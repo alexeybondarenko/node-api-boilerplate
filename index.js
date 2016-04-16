@@ -1,5 +1,7 @@
 
 import express from 'express'
+import expressValidator from 'express-validator'
+
 import bodyParser from 'body-parser'
 
 import router from './router'
@@ -15,6 +17,8 @@ app.set('PORT', process.env.PORT || 3000);
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
 
+app.use(expressValidator());
+
 // Routers
 app.use(router);
 
@@ -22,9 +26,15 @@ app.use(router);
 app.use((val, req, res, next) => {
   if (val instanceof Error) {
     // error response
+
+    let statusCode = (val.output || {}).statusCode || 500;
     res.json({
       error: {
-        message: val.message
+        // output is `boom js` error object property
+        code: statusCode,
+        message: val.message,
+        data: val.data ? val.data : undefined,
+        logs: statusCode >= 500 ? val.stack : undefined
       }
     });
     return;
