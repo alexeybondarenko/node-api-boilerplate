@@ -21,7 +21,7 @@ app.use(router);
 // Response modificators
 app.use((val, req, res, next) => {
   if (val instanceof Error) {
-    // error
+    // error response
     res.json({
       error: {
         message: val.message
@@ -29,7 +29,7 @@ app.use((val, req, res, next) => {
     });
     return;
   }
-  //
+  // normal response
   res.json({
     data: val
   })
