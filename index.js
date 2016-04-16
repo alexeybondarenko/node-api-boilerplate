@@ -4,8 +4,6 @@ import expressValidator from 'express-validator'
 
 import bodyParser from 'body-parser'
 
-import requireDir from 'require-dir';
-
 import router from './router'
 
 let app = express();
@@ -19,13 +17,15 @@ app.use(bodyParser.json()); // parse application/json
 
 app.use(expressValidator());
 
-// Request modificators can be here
-
+// Request modifiers can be here
 
 // Routers
 app.use(router);
 
-// Response modificators
+// Response modifiers can be here
+
+
+// final response middleware
 app.use(function (val, req, res, next) {
   if (val instanceof Error) {
     // error response
