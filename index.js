@@ -6,8 +6,6 @@ import bodyParser from 'body-parser'
 
 import requireDir from 'require-dir';
 
-let middlewares = requireDir('./middlewares');
-
 import router from './router'
 
 let app = express();
@@ -28,7 +26,27 @@ app.use(expressValidator());
 app.use(router);
 
 // Response modificators
-app.use(middlewares.response);
+app.use(function (val, req, res, next) {
+  if (val instanceof Error) {
+    // error response
+
+    let statusCode = (val.output || {}).statusCode || 500;
+    res.status(statusCode).json({
+      error: {
+        // output is `boom js` error object property
+        code: statusCode,
+        message: val.message,
+        data: val.data ? val.data : undefined,
+        logs: statusCode >= 500 ? val.stack : undefined
+      }
+    });
+    return;
+  }
+  // normal response
+  res.json({
+    data: val
+  })
+});
 
 app.listen(app.get('PORT'), () => {
   console.log(`Start server on port ${app.get('PORT')}`);
